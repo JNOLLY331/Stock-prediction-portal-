@@ -1,0 +1,20 @@
+body {
+    background-color: #212529;
+}
+
+
+
+
+.bg-light-dark {
+    background-color: hsl(210, 78%, 22%);
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-width: 100vh;
+}
+
+.container {
+    flex: 1;
+}
