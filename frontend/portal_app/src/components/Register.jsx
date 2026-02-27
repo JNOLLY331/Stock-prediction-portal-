@@ -101,7 +101,7 @@ const Register = () => {
             {success && <div className="alert alert-success my-2">Registration successful</div>}
             {loading ? (
               <button className="btn btn-info d-block mx-auto my-3" disabled>
-               Registering...
+                Registering...
               </button>
             ) : ( <button type="submit" className="btn btn-info d-block mx-auto my-3">
               Submit
