@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useContext} from "react";
 import Button from "./Button";
+import { AuthContext } from "./AuthProvider";
 
 const Main = () => {
+  const { loggedIn, setLoggedIn } = useContext(AuthContext);
   return (
     <>
       <style>{`
@@ -189,19 +191,23 @@ const Main = () => {
 
       <div className="main-root">
         <div className="main-card">
-
-          <div className="badge-tag">AI-Powered · Real-Time · Institutional Grade</div>
+          <div className="badge-tag">
+            AI-Powered · Real-Time · Institutional Grade
+          </div>
 
           <h1 className="main-title">
-            Stock Prediction<br /><em>Portal</em>
+            Stock Prediction
+            <br />
+            <em>Portal</em>
           </h1>
 
           <div className="divider-line" />
 
           <p className="main-desc">
-            Harness artificial intelligence, LSTM neural networks, and advanced technical
-            analysis to forecast market trends with precision. Manage portfolios, track
-            sentiment, and act on real-time signals — all in one unified platform.
+            Harness artificial intelligence, LSTM neural networks, and advanced
+            technical analysis to forecast market trends with precision. Manage
+            portfolios, track sentiment, and act on real-time signals — all in
+            one unified platform.
           </p>
 
           <div className="stats-row">
@@ -220,11 +226,19 @@ const Main = () => {
               <div className="stat-label">Market Data</div>
             </div>
           </div>
+          {loggedIn ? (
+            ""
+          ) : (
+            <Button
+              text="Get Started →"
+              className="btn-primary-custom"
+              url="/login"
+            />
+          )}
 
-          <Button text="Get Started →" className="btn-primary-custom" url="/login"/>
-
-          <p className="card-footer-note">No credit card required &nbsp;·&nbsp; Free to explore</p>
-
+          <p className="card-footer-note">
+            Designed and maintained by japheth Arnold
+          </p>
         </div>
       </div>
     </>

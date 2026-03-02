@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import { AuthContext } from "./AuthProvider";
 
 
 const Login = () => {
@@ -11,6 +12,7 @@ const Login = () => {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   const [errors, setErrors] = useState("");
+  const {loggedIn, setLoggedIn} =useContext(AuthContext)
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,6 +31,7 @@ const Login = () => {
       setTimeout(() => {
         setUsername("");
         setPassword("");
+         setLoggedIn(true)
         navigate("/");
       }, 2000);
     } catch (error) {

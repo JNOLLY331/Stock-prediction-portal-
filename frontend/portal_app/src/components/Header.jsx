@@ -1,16 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Button from './Button.jsx';
+import React, { useState, useContext, useEffect } from "react";
+import { Link,useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthProvider.jsx";
+
 
 const Header = () => {
+  const { loggedIn, setLoggedIn } = useContext(AuthContext);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("access");
+    setLoggedIn(false);
+    setMenuOpen(false);
+    navigate("/login")
+  };
 
   return (
     <>
@@ -23,10 +33,10 @@ const Header = () => {
           z-index: 100;
           font-family: 'DM Sans', sans-serif;
           transition: background 0.3s, box-shadow 0.3s, border-color 0.3s;
-          background: ${scrolled ? 'rgba(10,10,15,0.92)' : 'transparent'};
-          backdrop-filter: ${scrolled ? 'blur(20px)' : 'none'};
-          border-bottom: 1px solid ${scrolled ? 'rgba(255,255,255,0.07)' : 'transparent'};
-          box-shadow: ${scrolled ? '0 8px 32px rgba(0,0,0,0.3)' : 'none'};
+          background: ${scrolled ? "rgba(10,10,15,0.92)" : "transparent"};
+          backdrop-filter: ${scrolled ? "blur(20px)" : "none"};
+          border-bottom: 1px solid ${scrolled ? "rgba(255,255,255,0.07)" : "transparent"};
+          box-shadow: ${scrolled ? "0 8px 32px rgba(0,0,0,0.3)" : "none"};
         }
 
         .header-inner {
@@ -39,7 +49,6 @@ const Header = () => {
           justify-content: space-between;
         }
 
-        /* Brand */
         .header-brand {
           display: flex;
           align-items: center;
@@ -63,7 +72,6 @@ const Header = () => {
           white-space: nowrap;
         }
 
-        /* Desktop buttons */
         .header-actions {
           display: flex;
           align-items: center;
@@ -82,6 +90,7 @@ const Header = () => {
           color: #818cf8;
           border: 1px solid rgba(99,102,241,0.35);
           text-decoration: none;
+          cursor: pointer;
           transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s, color 0.2s;
         }
 
@@ -105,6 +114,7 @@ const Header = () => {
           color: #fff;
           border: none;
           text-decoration: none;
+          cursor: pointer;
           box-shadow: 0 4px 20px rgba(99,102,241,0.35);
           transition: box-shadow 0.2s, transform 0.15s;
         }
@@ -116,7 +126,28 @@ const Header = () => {
           text-decoration: none;
         }
 
-        /* Hamburger */
+        .header-btn-danger {
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.85rem;
+          font-weight: 500;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          padding: 10px 24px;
+          border-radius: 10px;
+          background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+          color: #fff;
+          border: none;
+          cursor: pointer;
+          box-shadow: 0 4px 20px rgba(239,68,68,0.35);
+          transition: box-shadow 0.2s, transform 0.15s;
+        }
+
+        .header-btn-danger:hover {
+          box-shadow: 0 8px 28px rgba(239,68,68,0.5);
+          transform: translateY(-1px);
+          color: #fff;
+        }
+
         .hamburger {
           display: none;
           flex-direction: column;
@@ -140,7 +171,6 @@ const Header = () => {
         .hamburger.open span:nth-child(2) { opacity: 0; }
         .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-        /* Mobile menu */
         .mobile-menu {
           display: none;
           flex-direction: column;
@@ -168,31 +198,66 @@ const Header = () => {
 
       <nav className="header-nav">
         <div className="header-inner">
-
           <Link to="/" className="header-brand">
             <div className="header-brand-mark" />
             <span className="header-brand-name">Stock Prediction Portal</span>
           </Link>
 
+          {/* Desktop actions */}
           <div className="header-actions">
-            <Link to="/register" className="header-btn-outline">Register</Link>
-            <Link to="/login" className="header-btn-solid">Login</Link>
+            {loggedIn ? (
+              <button className="header-btn-danger" onClick={handleLogout}>
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link to="/register" className="header-btn-outline">
+                  Register
+                </Link>
+                <Link to="/login" className="header-btn-solid">
+                  Login
+                </Link>
+              </>
+            )}
           </div>
 
           <button
-            className={`hamburger ${menuOpen ? 'open' : ''}`}
+            className={`hamburger ${menuOpen ? "open" : ""}`}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
-            <span /><span /><span />
+            <span />
+            <span />
+            <span />
           </button>
-
         </div>
 
         {/* Mobile dropdown */}
-        <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
-          <Link to="/register" className="header-btn-outline" style={{ textAlign: 'center' }} onClick={() => setMenuOpen(false)}>Register</Link>
-          <Link to="/login" className="header-btn-solid" style={{ textAlign: 'center' }} onClick={() => setMenuOpen(false)}>Login</Link>
+        <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+          {loggedIn ? (
+            <button className="header-btn-danger" onClick={handleLogout}>
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link
+                to="/register"
+                className="header-btn-outline"
+                style={{ textAlign: "center" }}
+                onClick={() => setMenuOpen(false)}
+              >
+                Register
+              </Link>
+              <Link
+                to="/login"
+                className="header-btn-solid"
+                style={{ textAlign: "center" }}
+                onClick={() => setMenuOpen(false)}
+              >
+                Login
+              </Link>
+            </>
+          )}
         </div>
       </nav>
     </>

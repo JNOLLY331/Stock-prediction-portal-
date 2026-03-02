@@ -28,7 +28,7 @@ const Register = () => {
       setTimeout(()=>{
         setUsername("");
         setPassword("");
-        navigate("/");
+        navigate("/login");
       },2000)
     } catch (error) {
       setErrors(error.response.data);
