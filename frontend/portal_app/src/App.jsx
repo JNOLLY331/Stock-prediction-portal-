@@ -7,6 +7,7 @@ import Register from "./components/Register.jsx";
 import Login from "./components/Login.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthProvider from "./components/AuthProvider.jsx";
+import Dashboard from "./components/dashboard/Dashboard.jsx";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
             <Route path="/" element={<Main />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path='dashboard' component={<Dashboard />}/>            
           </Routes>
           <Footer />
         </BrowserRouter>

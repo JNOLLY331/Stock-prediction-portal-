@@ -227,7 +227,7 @@ const Main = () => {
             </div>
           </div>
           {loggedIn ? (
-            ""
+            <Button url= "/dashboard" text="Explore" />
           ) : (
             <Button
               text="Get Started →"
